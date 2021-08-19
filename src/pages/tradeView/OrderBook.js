@@ -5,6 +5,7 @@ import { w3cwebsocket as W3CWebSocket } from "websocket";
 import { Box } from "grommet";
 
 import OrderBookTable from "./OrderBookTable";
+import Card from "../../components/Card";
 
 /**
  * This component renders order book for
@@ -29,6 +30,7 @@ class OrderBook extends Component {
   componentDidMount() {
     this.client.onopen = () => {
       console.log("WebSocket Client Connected");
+      this.subscribeToTopic(this.props.currencyPair);
     };
 
     this.client.onerror = (err) => {
@@ -119,13 +121,10 @@ class OrderBook extends Component {
 
   render() {
     return (
-      <Box
-        margin={{ vertical: "medium" }}
+      <Card
         gap="small"
         flex={false}
         direction="row"
-        elevation="medium"
-        background="background-front"
         width="512px"
         height={{ min: "medium" }}
         fill={false}
@@ -139,7 +138,7 @@ class OrderBook extends Component {
           header={["Ask", "Amount"]}
           items={this.state.data.asks}
         />
-      </Box>
+      </Card>
     );
   }
 }

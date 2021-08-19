@@ -4,8 +4,8 @@ import React, { Component } from "react";
 import { Box } from "grommet";
 
 import OrderBook from "./OrderBook";
-
 import CurrencyBanner from "./CurrencyBanner";
+import Graph from "./Graph";
 
 /**
  * This component renders TradeView page
@@ -16,7 +16,7 @@ class TradeView extends Component {
     this.onSelect = this.onSelect.bind(this);
 
     this.state = {
-      selectedCurrencyPair: "",
+      selectedCurrencyPair: null,
     };
   }
 
@@ -30,12 +30,19 @@ class TradeView extends Component {
 
   render() {
     return (
-      <Box direction="column">
+      <Box direction="column" className="page-tradeview" width="xlarge">
         {/* Currency selector banner */}
         <CurrencyBanner updateSelectedCurrencyPair={this.onSelect} />
 
         {/* Content */}
-        <OrderBook currencyPair={this.state.selectedCurrencyPair} />
+        {this.state.selectedCurrencyPair && (
+          <>
+            <Graph symbol={this.state.selectedCurrencyPair} />
+            <Box direction="row">
+              <OrderBook currencyPair={this.state.selectedCurrencyPair} />
+            </Box>
+          </>
+        )}
       </Box>
     );
   }

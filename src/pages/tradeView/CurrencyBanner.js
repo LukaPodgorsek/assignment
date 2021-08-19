@@ -31,7 +31,7 @@ class CurrencyBanner extends Component {
         url_symbol: "",
         description: "",
       },
-      // available trading pairs
+      // available trading pairs - TODO remove
       tradingPairs: [
         {
           base_decimals: 8,
@@ -58,7 +58,7 @@ class CurrencyBanner extends Component {
   }
 
   componentDidMount() {
-    // this.getTradingPairs();
+    this.getTradingPairs();
   }
 
   /**
@@ -68,15 +68,20 @@ class CurrencyBanner extends Component {
   getTradingPairs() {
     fetch("/api/v2/trading-pairs-info")
       .then((response) => response.json())
-      .then((tradingPairs) =>
-        this.setState({ tradingPairs, defaultTradingPairs: tradingPairs })
-      )
+      .then((tradingPairs) => {
+        this.setState({
+          tradingPairs,
+          defaultTradingPairs: tradingPairs,
+        });
+        this.onSelect({ value: tradingPairs[0] });
+        this.props.updateSelectedCurrencyPair(tradingPairs[0].url_symbol);
+      })
       .catch((err) => console.error("ERR: ", err));
   }
 
   /**
    * Callback function for onChange event on Select component
-   * @param {*} e
+   * @param {Object} e
    */
   onSelect(e) {
     let { value } = e;
@@ -115,6 +120,10 @@ class CurrencyBanner extends Component {
     return currency ? currency[1] : "";
   }
 
+  /**
+   * Callback function to handle search in select component
+   * @param {String} text
+   */
   onSearch(text) {
     const escapedText = text.replace(/[-\\^$*+?.()|[\]{}]/g, "\\$&");
     const regex = new RegExp(escapedText, "i");
@@ -126,7 +135,13 @@ class CurrencyBanner extends Component {
 
   render() {
     return (
-      <Box direction="row" fill justify="between" align="center" gap="medium">
+      <Box
+        direction="row"
+        justify="between"
+        align="center"
+        gap="medium"
+        height="xxsmall"
+      >
         <Select
           labelKey="name"
           valueKey="url_symbol"
