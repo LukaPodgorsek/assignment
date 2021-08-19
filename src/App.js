@@ -4,9 +4,24 @@ import React, { Component } from "react";
 // Libs
 import { Grommet } from "grommet";
 import { hpe } from "grommet-theme-hpe";
+
+// Components
+import AppHeader from "./components/AppHeader";
+import Content from "./components/Content";
+
+// Pages
+import TradeView from "./pages/tradeView/TradeView";
+
 class App extends Component {
   render() {
-    return <Grommet theme={hpe} full></Grommet>;
+    return (
+      <Grommet theme={hpe} themeMode="dark" full>
+        <AppHeader />
+        <Content>
+          <TradeView />
+        </Content>
+      </Grommet>
+    );
   }
 }
 
