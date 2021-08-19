@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+import { w3cwebsocket as W3CWebSocket } from "websocket";
 
 import { Box } from "grommet";
 
@@ -12,9 +13,43 @@ import OrderBookTable from "./OrderBookTable";
 class OrderBook extends Component {
   constructor() {
     super();
+    this.subscribeToTopic = this.subscribeToTopic.bind(this);
+    this.unsubscribeFromTopic = this.unsubscribeFromTopic.bind(this);
 
     this.state = {
       data: { bids: [], asks: [] },
+    };
+
+    this.client = new W3CWebSocket("wss://ws.bitstamp.net");
+  }
+
+  /**
+   * Register socket functions when component mounts
+   */
+  componentDidMount() {
+    this.client.onopen = () => {
+      console.log("WebSocket Client Connected");
+    };
+
+    this.client.onerror = (err) => {
+      console.log("ERR:", err);
+    };
+
+    this.client.onmessage = (message) => {
+      let response = JSON.parse(message.data);
+      //console.log("event type: ", response.event);
+
+      if (response.event === "data") {
+        if (response.data) {
+          let bids = Object.values(response.data.bids).slice(0, 10);
+          let asks = Object.values(response.data.asks).slice(0, 10);
+          this.setState({ data: { bids, asks } });
+        }
+      }
+    };
+
+    this.client.onclose = (message) => {
+      console.log("socket closed", message);
     };
   }
 
@@ -26,8 +61,42 @@ class OrderBook extends Component {
   componentDidUpdate(prevProps) {
     if (this.props.currencyPair !== prevProps.currencyPair) {
       console.log("get order book");
-      this.getOrderBook(this.props.currencyPair);
+      //this.getOrderBook(this.props.currencyPair);
+      this.unsubscribeFromTopic(prevProps.currencyPair);
+      this.subscribeToTopic(this.props.currencyPair);
     }
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeFromTopic();
+  }
+
+  /**
+   * This function subscribes to websocket topic
+   */
+  subscribeToTopic() {
+    this.client.send(
+      JSON.stringify({
+        event: "bts:subscribe",
+        data: {
+          channel: `order_book_${this.props.currencyPair}`,
+        },
+      })
+    );
+  }
+
+  /**
+   * This function unsubscribes from websocket topic
+   */
+  unsubscribeFromTopic() {
+    this.client.send(
+      JSON.stringify({
+        event: "bts:unsubscribe",
+        data: {
+          channel: `order_book_${this.props.currencyPair}`,
+        },
+      })
+    );
   }
 
   /**
@@ -59,6 +128,7 @@ class OrderBook extends Component {
         <OrderBookTable
           header={["Bid", "Amount"]}
           items={this.state.data.bids}
+          isTypeBid={true}
         />
         <OrderBookTable
           header={["Ask", "Amount"]}

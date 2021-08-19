@@ -1,3 +1,7 @@
+# Running the demo application
+
+yarn start
+
 # Home assignment - Tradeview Lite
 
 Implement a simplified version of Bitstamp Tradeview (Frontend only). Feel free to use any content available on the internet. The nature of this example is entirely free form / unconstrained. Any question or request for additional clarification is welcome.

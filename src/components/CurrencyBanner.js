@@ -19,6 +19,7 @@ class CurrencyBanner extends Component {
     this.getTradingPairs = this.getTradingPairs.bind(this);
     this.getTickerForCurrency = this.getTickerForCurrency.bind(this);
     this.onSelect = this.onSelect.bind(this);
+    this.onSearch = this.onSearch.bind(this);
 
     this.state = {
       selectedTradingPair: {
@@ -57,7 +58,7 @@ class CurrencyBanner extends Component {
   }
 
   componentDidMount() {
-    //this.getTradingPairs();
+    this.getTradingPairs();
   }
 
   /**
@@ -67,7 +68,9 @@ class CurrencyBanner extends Component {
   getTradingPairs() {
     fetch("/api/v2/trading-pairs-info")
       .then((response) => response.json())
-      .then((tradingPairs) => this.setState({ tradingPairs }))
+      .then((tradingPairs) =>
+        this.setState({ tradingPairs, defaultTradingPairs: tradingPairs })
+      )
       .catch((err) => console.error("ERR: ", err));
   }
 
@@ -112,6 +115,15 @@ class CurrencyBanner extends Component {
     return currency ? currency[1] : "";
   }
 
+  onSearch(text) {
+    const escapedText = text.replace(/[-\\^$*+?.()|[\]{}]/g, "\\$&");
+    const regex = new RegExp(escapedText, "i");
+    let options = this.state.defaultTradingPairs.filter((o) =>
+      regex.test(o.name)
+    );
+    this.setState({ tradingPairs: options });
+  }
+
   render() {
     return (
       <Box direction="row" fill justify="between" align="center" gap="medium">
@@ -120,7 +132,7 @@ class CurrencyBanner extends Component {
           valueKey="url_symbol"
           options={this.state.tradingPairs}
           value={this.state.selectedTradingPair}
-          onSearch={() => null}
+          onSearch={this.onSearch}
           onChange={this.onSelect}
         />
         <Box direction="row">

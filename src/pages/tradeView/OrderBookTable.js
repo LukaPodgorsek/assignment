@@ -9,6 +9,10 @@ const StyledTable = styled(Table)`
   width: 250px;
 `;
 
+const StyledCell = styled(TableCell)`
+  ${({ isTypeBid }) => (isTypeBid ? `color: #199F3A;` : `color: #df4249;`)}
+`;
+
 class OrderBookTable extends Component {
   render() {
     return (
@@ -24,7 +28,9 @@ class OrderBookTable extends Component {
           {this.props.items &&
             this.props.items.map((el, i) => (
               <TableRow key={i}>
-                <TableCell>{el[0]}</TableCell>
+                <StyledCell isTypeBid={this.props.isTypeBid}>
+                  {el[0]}
+                </StyledCell>
                 <TableCell>{el[1]}</TableCell>
               </TableRow>
             ))}
@@ -37,10 +43,12 @@ class OrderBookTable extends Component {
 OrderBookTable.propTypes = {
   items: PropTypes.array,
   header: PropTypes.array.isRequired,
+  isTypeBid: PropTypes.bool,
 };
 
 OrderBookTable.defaultProps = {
   header: ["Bid", "Amount"],
+  isTypeBid: false,
 };
 
 export default OrderBookTable;
