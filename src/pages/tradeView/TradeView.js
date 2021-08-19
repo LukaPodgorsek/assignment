@@ -5,7 +5,7 @@ import { Box } from "grommet";
 
 import OrderBook from "./OrderBook";
 
-import CurrencyBanner from "../../components/CurrencyBanner";
+import CurrencyBanner from "./CurrencyBanner";
 
 /**
  * This component renders TradeView page

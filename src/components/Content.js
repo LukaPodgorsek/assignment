@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import {Box} from 'grommet';
+import React, { Component } from "react";
+import { Box } from "grommet";
 
 /**
  * This is main application content wrapper.
@@ -7,7 +7,7 @@ import {Box} from 'grommet';
 class Content extends Component {
   render() {
     return (
-      <Box direction='row' margin='medium'>
+      <Box direction="row" margin="medium">
         {this.props.children}
       </Box>
     );

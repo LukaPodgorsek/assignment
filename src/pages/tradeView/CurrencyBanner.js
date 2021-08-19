@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { Box, Select } from "grommet";
 
 // components
-import Price from "./Price";
+import Price from "../../components/Price";
 
 /**
  * This component renders currency banner.
@@ -58,7 +58,7 @@ class CurrencyBanner extends Component {
   }
 
   componentDidMount() {
-    this.getTradingPairs();
+    // this.getTradingPairs();
   }
 
   /**

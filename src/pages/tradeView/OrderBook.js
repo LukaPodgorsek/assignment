@@ -123,8 +123,12 @@ class OrderBook extends Component {
         margin={{ vertical: "medium" }}
         gap="small"
         flex={false}
-        overflow="auto"
         direction="row"
+        elevation="medium"
+        background="background-front"
+        width="512px"
+        height={{ min: "medium" }}
+        fill={false}
       >
         <OrderBookTable
           header={["Bid", "Amount"]}
