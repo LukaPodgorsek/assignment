@@ -37,7 +37,6 @@ class OrderBook extends Component {
 
     this.client.onmessage = (message) => {
       let response = JSON.parse(message.data);
-      //console.log("event type: ", response.event);
 
       if (response.event === "data") {
         if (response.data) {
@@ -45,6 +44,8 @@ class OrderBook extends Component {
           let asks = Object.values(response.data.asks).slice(0, 10);
           this.setState({ data: { bids, asks } });
         }
+      } else {
+        console.log("event type: ", response.event);
       }
     };
 
@@ -68,18 +69,18 @@ class OrderBook extends Component {
   }
 
   componentWillUnmount() {
-    this.unsubscribeFromTopic();
+    this.unsubscribeFromTopic(this.props.currencyPair);
   }
 
   /**
    * This function subscribes to websocket topic
    */
-  subscribeToTopic() {
+  subscribeToTopic(topic) {
     this.client.send(
       JSON.stringify({
         event: "bts:subscribe",
         data: {
-          channel: `order_book_${this.props.currencyPair}`,
+          channel: `order_book_${topic}`,
         },
       })
     );
@@ -88,12 +89,12 @@ class OrderBook extends Component {
   /**
    * This function unsubscribes from websocket topic
    */
-  unsubscribeFromTopic() {
+  unsubscribeFromTopic(topic) {
     this.client.send(
       JSON.stringify({
         event: "bts:unsubscribe",
         data: {
-          channel: `order_book_${this.props.currencyPair}`,
+          channel: `order_book_${topic}`,
         },
       })
     );
