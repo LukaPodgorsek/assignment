@@ -31,27 +31,8 @@ class CurrencyBanner extends Component {
         url_symbol: "",
         description: "",
       },
-      // available trading pairs - TODO remove
-      tradingPairs: [
-        {
-          base_decimals: 8,
-          minimum_order: "20.0 USD",
-          name: "BTC/USD",
-          counter_decimals: 2,
-          trading: "Enabled",
-          url_symbol: "btcusd",
-          description: "Bitcoin / U.S. dollar",
-        },
-        {
-          base_decimals: 8,
-          minimum_order: "20.0 EUR",
-          name: "BTC/EUR",
-          counter_decimals: 2,
-          trading: "Enabled",
-          url_symbol: "btceur",
-          description: "Bitcoin / Euro",
-        },
-      ],
+      // available trading pairs
+      tradingPairs: [],
       selectedCurrencyTicker: {},
       unit: "",
     };
