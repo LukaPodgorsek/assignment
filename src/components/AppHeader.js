@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 
-import { Header, Heading, Image, Box, Text } from "grommet";
+import { Header, Image, Box, Text } from "grommet";
 
 // styled
 const Logo = styled(Image)`
