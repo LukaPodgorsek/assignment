@@ -6,6 +6,7 @@ import { Box } from "grommet";
 import OrderBook from "./OrderBook";
 import CurrencyBanner from "./CurrencyBanner";
 import Graph from "./Graph";
+import TradeCurrency from "./TradeCurrency";
 
 /**
  * This component renders TradeView page
@@ -13,10 +14,12 @@ import Graph from "./Graph";
 class TradeView extends Component {
   constructor() {
     super();
-    this.onSelect = this.onSelect.bind(this);
+    this.updateSelectedCurrencyPair =
+      this.updateSelectedCurrencyPair.bind(this);
 
     this.state = {
       selectedCurrencyPair: null,
+      units: {},
     };
   }
 
@@ -24,22 +27,25 @@ class TradeView extends Component {
    * Callback function for onChange event on Select component
    * @param {String} selectedCurrencyPair
    */
-  onSelect(selectedCurrencyPair) {
-    this.setState({ selectedCurrencyPair });
+  updateSelectedCurrencyPair(selectedCurrencyPair, units) {
+    this.setState({ selectedCurrencyPair, units });
   }
 
   render() {
     return (
       <Box direction="column" className="page-tradeview" width="xlarge">
         {/* Currency selector banner */}
-        <CurrencyBanner updateSelectedCurrencyPair={this.onSelect} />
+        <CurrencyBanner
+          updateSelectedCurrencyPair={this.updateSelectedCurrencyPair}
+        />
 
         {/* Content */}
         {this.state.selectedCurrencyPair && (
           <>
             <Graph symbol={this.state.selectedCurrencyPair} />
-            <Box direction="row">
+            <Box direction="row" gap="small" justify="between">
               <OrderBook currencyPair={this.state.selectedCurrencyPair} />
+              <TradeCurrency units={this.state.units} />
             </Box>
           </>
         )}

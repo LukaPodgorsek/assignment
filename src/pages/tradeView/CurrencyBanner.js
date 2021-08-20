@@ -74,7 +74,6 @@ class CurrencyBanner extends Component {
           defaultTradingPairs: tradingPairs,
         });
         this.onSelect({ value: tradingPairs[0] });
-        this.props.updateSelectedCurrencyPair(tradingPairs[0].url_symbol);
       })
       .catch((err) => console.error("ERR: ", err));
   }
@@ -85,14 +84,14 @@ class CurrencyBanner extends Component {
    */
   onSelect(e) {
     let { value } = e;
-    let unit = this.parseCurrency(value.minimum_order);
-    this.setState({ selectedTradingPair: value, unit });
+    let units = this.parseCurrency(value.name);
+    this.setState({ selectedTradingPair: value, unit: units.secondary });
 
     // get trading pair prices
     this.getTickerForCurrency(value.url_symbol);
 
     // update parent with selected trading pair
-    this.props.updateSelectedCurrencyPair(value.url_symbol);
+    this.props.updateSelectedCurrencyPair(value.url_symbol, units);
   }
 
   /**
@@ -110,14 +109,15 @@ class CurrencyBanner extends Component {
   }
 
   /**
-   * This function extracts currency from price string
+   * This function extracts currency from name string
    * @param {String} value
    * @returns currency string
    */
   parseCurrency(value) {
-    let regex = /^[0-9]*\.[0-9]*\s(\w*)/gm;
-    let currency = regex.exec(value);
-    return currency ? currency[1] : "";
+    //let regex = /^[0-9]*\.[0-9]*\s(\w*)/gm;
+    //let currency = regex.exec(value);
+    let units = value.split("/");
+    return { primary: units[0], secondary: units[1] };
   }
 
   /**

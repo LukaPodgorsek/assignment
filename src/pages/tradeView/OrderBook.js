@@ -62,7 +62,6 @@ class OrderBook extends Component {
    */
   componentDidUpdate(prevProps) {
     if (this.props.currencyPair !== prevProps.currencyPair) {
-      console.log("get order book");
       //this.getOrderBook(this.props.currencyPair);
       this.unsubscribeFromTopic(prevProps.currencyPair);
       this.subscribeToTopic(this.props.currencyPair);
