@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 
-import { Box } from "grommet";
-
+// Components
 import OrderBookTable from "./OrderBookTable";
 import Card from "../../components/Card";
 
@@ -70,6 +69,10 @@ class OrderBook extends Component {
     }
   }
 
+  /**
+   * Unsubscribe from websocket topic when component
+   * unmounts
+   */
   componentWillUnmount() {
     this.unsubscribeFromTopic(this.props.currencyPair);
   }
