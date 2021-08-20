@@ -123,8 +123,6 @@ class TradeCurrency extends Component {
   }
 }
 
-// TODO flex grow za open orders
-
 TradeCurrency.propTypes = {};
 
 export default TradeCurrency;

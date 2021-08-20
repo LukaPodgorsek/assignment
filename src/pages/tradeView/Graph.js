@@ -9,11 +9,10 @@ import Card from "../../components/Card";
 class Graph extends Component {
   render() {
     return (
-      <Card height="medium" className="graph">
+      <Card height="medium">
         <TradingViewWidget
           symbol={`coinbase:${this.props.symbol}`}
           theme={Themes.DARK}
-          locale="fr"
           autosize
         />
       </Card>

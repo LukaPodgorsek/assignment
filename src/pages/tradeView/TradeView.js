@@ -33,7 +33,7 @@ class TradeView extends Component {
 
   render() {
     return (
-      <Box direction="column" className="page-tradeview" width="xlarge">
+      <Box direction="column" width="xlarge">
         {/* Currency selector banner */}
         <CurrencyBanner
           updateSelectedCurrencyPair={this.updateSelectedCurrencyPair}
